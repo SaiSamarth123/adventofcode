@@ -19,33 +19,29 @@ def parse_game(game_str):
     return game_id, result_sets
 
 
-def is_game_possible(max_red, max_blue, max_green, color_sets):
-    for colors in color_sets:
-        if (
-            colors["blue"] > max_blue
-            or colors["red"] > max_red
-            or colors["green"] > max_green
-        ):
-            return False
+def power_of_game(color_sets):
+    max_blue = max(color["blue"] for color in color_sets)
+    max_green = max(color["green"] for color in color_sets)
+    max_red = max(color["red"] for color in color_sets)
 
-    return True
+    power = max_blue * max_green * max_red
+
+    return power
 
 
-def sum_valid_games_ids(games, max_red, max_blue, max_green):
+def sum_power_of_games(games):
 
-    valid_sum = 0
+    power_sum = 0
 
     for game in games:
         game_id, color_sets = parse_game(game)
 
-        if is_game_possible(max_red, max_blue, max_green, color_sets):
-            valid_sum += game_id
+        power_sum += power_of_game(color_sets)
 
-    return valid_sum
+    return power_sum
 
 
 games = """
-
 Game 1: 2 blue, 3 red; 3 green, 3 blue, 6 red; 4 blue, 6 red; 2 green, 2 blue, 9 red; 2 red, 4 blue
 Game 2: 4 red, 1 green; 3 red; 13 green, 5 red, 3 blue; 3 green, 2 red; 3 blue, 5 red, 3 green; 2 red, 3 blue, 12 green
 Game 3: 4 red, 1 green, 1 blue; 1 red, 1 blue; 6 red, 1 green; 6 red, 3 blue, 1 green; 4 red
@@ -143,4 +139,17 @@ Game 94: 4 green, 10 blue, 8 red; 4 red, 10 blue, 2 green; 2 green, 10 blue, 5 r
 Game 95: 5 green, 1 blue; 3 blue, 11 green, 8 red; 8 blue, 2 red, 12 green; 4 green, 4 blue, 4 red
 Game 96: 1 blue, 13 green; 8 blue, 3 red, 4 green; 1 red, 3 blue, 10 green
 Game 97: 18 green, 4 red; 1 blue, 2 red, 9 green; 6 red, 3 blue, 10 green; 3 blue, 15 green, 4 red
-Game 98: 2 blue, 3 green, 6 red; 1 green, 1 blue, 8 red; 8 red, 3 green, 1 blue; 2 
+Game 98: 2 blue, 3 green, 6 red; 1 green, 1 blue, 8 red; 8 red, 3 green, 1 blue; 2 blue; 8 red, 2 green, 2 blue
+Game 99: 1 green, 2 red, 1 blue; 8 green, 4 blue, 1 red; 7 blue, 1 red, 11 green; 9 green, 3 blue; 1 red, 2 blue; 1 red, 6 blue
+Game 100: 7 blue, 9 green, 2 red; 5 red, 9 green; 1 blue, 8 red, 13 green
+"""
+
+games_list = games.strip().split("\n")
+
+game_data = []
+
+for game in games_list:
+    cleaned_game = game.strip()
+    game_data.append(cleaned_game)
+
+print(sum_power_of_games(game_data))
