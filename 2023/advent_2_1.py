@@ -156,4 +156,5 @@ for game in games_list:
     cleaned_game = game.strip()
     game_data.append(cleaned_game)
 
+
 print(sum_valid_games_ids(game_data, 12, 14, 13))
