@@ -16,21 +16,34 @@ total = 0
 
 
 def check_diff(arr):
-    global total
-    arr = np.array(arr)
 
-    differences = np.abs(np.diff(arr))
+    n = len(arr)
 
-    if np.all((1 <= differences) & (differences <= 3)):
-        total += 1
+    bad_level = 0
+
+    for i in range(1, n):
+
+        if not (1 <= abs(arr[i] - arr[i - 1]) <= 3):
+
+            bad_level += 1
+
+            if bad_level > 1:
+                return False
+
+            if i > 1 and not (1 <= abs(arr[i] - arr[i - 2]) <= 3):
+                return False
+
+    return True
 
 
 def check_order(data):
+    global total
     for line in data:
         array = list(map(int, line.split()))
 
         if array == sorted(array) or array == sorted(array, reverse=True):
-            check_diff(array)
+            if check_diff(array):
+                total += 1
 
 
 check_order(lines)
