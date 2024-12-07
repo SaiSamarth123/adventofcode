@@ -7,7 +7,21 @@ def count_word(grid, word):
     directions = [(0, 1), (0, -1), (1, 0), (-1, 0), (1, 1), (-1, -1), (1, -1), (-1, 1)]
 
     def is_valid(x, y):
-        return 0 <= x <= rows and 0 <= y <= cols
+        return 0 <= x < rows and 0 <= y < cols
+
+    def search(x, y, dx, dy):
+        for i in range(word_len):
+            nx, ny = x + i * dx, y + i * dy
+            if not is_valid(nx, ny) or grid[nx][ny] != word[i]:
+                return 0
+        return 1
+
+    for x in range(rows):
+        for y in range(cols):
+            for dx, dy in directions:
+                count += search(x, y, dx, dy)
+
+    return count
 
 
 input_string = """
@@ -27,3 +41,6 @@ MXMXAXMASX
 grid = [list(row) for row in input_string.split("\n")]
 
 word = "XMAS"
+
+occurrences = count_word(grid, word)
+print(occurrences)
